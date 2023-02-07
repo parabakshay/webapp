@@ -28,7 +28,7 @@ Navigate to the cloned repository directory & install the dependencies by runnin
 ```
 npm install
 ```
-## Run the Application
+## Run the Applications
 
 Navigate to the cloned repository directory & run the following command:
 
