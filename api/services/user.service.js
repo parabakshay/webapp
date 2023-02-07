@@ -53,15 +53,8 @@ const updateById = async (_id, userInfo) => {
   }
 };
 
-const authenticateUser = async (userId, username, password) => {
-    const userInfo = await UserModel.findOne(userId);
-    if(userInfo.username !== username) return false;
-    return bcrypt.compare(password, userInfo.password);
-}
- 
 export default {
   create,
   fetchById,
-  updateById,
-  authenticateUser,
+  updateById
 };
