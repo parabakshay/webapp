@@ -1,5 +1,4 @@
 import _ from "lodash";
-import { userInfo } from "os";
 
 const findOne = async (_id) => {
     const [rows] = await dbConn.query(`SELECT * FROM user WHERE id='${_id}' LIMIT 1`);
