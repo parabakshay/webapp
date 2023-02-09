@@ -25,10 +25,10 @@ const initMySQLConn = async () => {
 };
 
 const server = stoppable(
-    httpServer.listen(config.app.port || 8080, async () => {
+    httpServer.listen(config.app.port, async () => {
         await initMySQLConn();
         console.log('WebApp connected to MySQL DB');
-        console.log('Server listening on port', config.app.port || 8080);
+        console.log('Server listening on port', config.app.port);
     }));
 
 const shutdown = () => {

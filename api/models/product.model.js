@@ -14,16 +14,32 @@ const insertOne = async (productInfo) => {
     await dbConn.query(query, values);
 }
 
-const updateOne = async (productInfo, _id) => {
+const updateById = async (productInfo, _id) => {
     const columns = Object.keys(productInfo);
     const values = Object.values(productInfo);
     values.push(_id);
     const query = "UPDATE product SET " + columns.join(" = ? ,") +" = ? WHERE id = ?";
-    await dbConn.query(query, values);
+    const [metaData] = await dbConn.query(query, values);
+    return metaData;
 };
+
+const deleteById = async (_id) => {
+    const query = "DELETE FROM product WHERE id=?";
+    const [metaData] = await dbConn.query(query, [_id]);
+    return metaData;
+}
+
+const findBySkuId = async (_id) => {
+    const query = "SELECT * FROM product WHERE sku=? LIMIT 1";
+    const [rows] = await dbConn.query(query, [_id]);
+    if(rows.length) return rows[0];
+    else return {};
+}
 
 export default {
     findOne,
     insertOne,
-    updateOne
+    updateById,
+    deleteById,
+    findBySkuId,
 }
