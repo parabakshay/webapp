@@ -24,7 +24,9 @@ const verifyUserId = (id, userInfo) => {
 
 const verifyProductOwner = async (id, userInfo, res) => {
     const productInfo = await ProductModel.findOne(id);
-    if(isEmpty(productInfo)) return sendResponse(res, 'NOT FOUND', 404);
+    if(isEmpty(productInfo)) {
+        return sendResponse(res, 'NOT FOUND', 404);
+    };
     return (productInfo.owner_user_id === userInfo.id);
 }
 
