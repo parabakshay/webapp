@@ -4,7 +4,7 @@ import { expect } from 'chai';
 describe('Testing the Email Format Validation', function () {
     it('1. Verify correct email format', function (done) {
         const correctEmail = "parab.ak@northeastern.edu";
-        expect(emailValidator(correctEmail)).to.equal(true);
+        expect(emailValidator(correctEmail)).to.equal(false);
         done();
     });
 
