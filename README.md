@@ -21,7 +21,7 @@ Clone the repository using the following command:
 git clone git@github.com:akshayparab-csye6225/webapp.git
 ```
 
-## Install Dependencies
+## Install Dependenciess
 
 Navigate to the cloned repository directory & install the dependencies by running the following command:
 
