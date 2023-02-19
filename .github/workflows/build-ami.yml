@@ -10,13 +10,4 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Compress files
-        run:  touch webapp.tar.gz && tar --exclude=webapp.tar.gz --exclude='.git' --exclude='.github' --exclude='.vscode' --exclude='node_modules' --exclude="package-lock.json" --exclude=".env" -zcvf webapp.tar.gz .
-      - name: Archive build artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: webapp-artifact
-          path: webapp.tar.gz
-      - name: Download build artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: webapp-artifact
+        run:  touch webapp.tar.gz && tar --exclude=webapp.tar.gz --exclude='.git' --exclude='.github' --exclude='.vscode' --exclude='node_modules' --exclude="package-lock.json" --exclude=".env" -zcvf webapp.tar.gz . && pwd
