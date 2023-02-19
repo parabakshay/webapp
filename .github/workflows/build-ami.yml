@@ -1,0 +1,22 @@
+name: Package Node App and Build Custom AMI
+on:
+  pull_request:
+    branches: [ "main" ]
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Compress files
+        run:  tar --exclude='.git' --exclude='.github' --exclude='.vscode' --exclude='node_modules' --exclude="package-lock.json" --exclude=".env" -zcvf webapp.tar.gz webapp/
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: webapp-artifact
+          path: webapp.tar.gz
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: webapp-artifact
