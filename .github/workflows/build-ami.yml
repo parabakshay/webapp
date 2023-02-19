@@ -5,6 +5,9 @@ on:
 
 jobs:
   build:
+    permissions:
+      id-token: write # need this for OIDC  
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
