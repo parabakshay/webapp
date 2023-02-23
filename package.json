@@ -6,7 +6,9 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha",
-    "start": "node -r dotenv/config server.js"
+    "start": "node server.js",
+    "migratedb": "npx sequelize-cli db:migrate",
+    "migratedbUndo": "npx sequelize-cli db:migrate:undo"
   },
   "repository": {
     "type": "git",
@@ -33,9 +35,9 @@
     "sequelize-cli": "^6.6.0",
     "stoppable": "^1.1.0",
     "url": "^0.11.0",
-    "validator": "^13.7.0"
+    "validator": "^13.7.0",
+    "babel-register": "^6.26.0"
   },
   "devDependencies": {
-    "babel-register": "^6.26.0"
   }
 }
