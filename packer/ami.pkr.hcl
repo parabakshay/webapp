@@ -1,7 +1,7 @@
 source "amazon-ebs" "aws-ami" {
   region          = var.aws_region
   source_ami      = var.source_ami
-  instance_type   = var.ec2_instance_type
+  instance_type   = var.ec2_instance_typ
   ssh_username    = var.ssh_username
   ami_name        = "csye6225_${formatdate("YYYY_MM_DD_hh_mm_ss", timestamp())}"
   ami_description = "AMI for CSYE 6225"
