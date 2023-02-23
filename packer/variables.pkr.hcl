@@ -75,3 +75,33 @@ variable "ami_users" {
   description = "AWS AMI USERS"
   default     = ["337718472605"]
 }
+
+variable "provisioner_file_source" {
+  type        = string
+  description = "Provisioner File Source"
+  default     = "./webapp.tar.gz"
+}
+
+variable "provisioner_file_destination" {
+  type        = string
+  description = "Provisioner File Destination"
+  default     = "/home/ec2-user/webapp.tar.gz"
+}
+
+variable "provisioner_shell_script_path" {
+  type        = string
+  description = "Provisioner Shell Script Path"
+  default     = "./scripts/setup-node-env.sh"
+}
+
+variable "provisioner_shell_pause_before" {
+  type        = string
+  description = "Provisioner Shell Pause Before"
+  default     = "10s"
+}
+
+variable "provisioner_shell_timeout" {
+  type        = string
+  description = "Provisioner Shell Timeout"
+  default     = "10s"
+}
