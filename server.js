@@ -3,6 +3,8 @@ import stoppable from 'stoppable';
 import app from './api/app.js';
 import http from 'http';
 import mysql from 'mysql2/promise';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 import _conf from './config/index.js';
 global.config = _conf;

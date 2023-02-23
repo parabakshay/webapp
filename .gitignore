@@ -105,3 +105,6 @@ dist
 
 # Local deployment configuration file
 config/deployment.json
+
+#ignore locally created artifacts
+*.tar.gz
