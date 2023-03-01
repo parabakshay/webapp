@@ -24,7 +24,7 @@ source "amazon-ebs" "aws-ami" {
 build {
   name = "webapp-packer"
   sources = [
-    "amazon-ebs.aws-ami"
+    "amazon-ebs.aws-ami
   ]
 
   provisioner "file" {
