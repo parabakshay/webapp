@@ -1,6 +1,6 @@
 name: Build Custom AMI
 on:
-  push:
+  pull_request:
     branches: [ "main" ]
 
 jobs:
@@ -31,7 +31,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Setup packer
         uses: hashicorp/setup-packer@main
@@ -49,4 +49,4 @@ jobs:
       
       - name: Build `packer build`
         id: build
-        run: packer build -var-file="./packer/variables.pkrvars.hcl" ./packer/
+        run: packer build -var-file="./packer/variables.pkrvars.hcl" -var 'ami_users=[${{ secrets.DEMO_ACCOUNT_ID }}]' ./packer/

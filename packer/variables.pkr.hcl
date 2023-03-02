@@ -73,7 +73,7 @@ variable "ami_regions" {
 variable "ami_users" {
   type        = list(string)
   description = "AWS AMI USERS"
-  default     = ["337718472605"]
+  default     = []
 }
 
 variable "provisioner_file_source" {

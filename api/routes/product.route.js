@@ -1,11 +1,16 @@
 import express from 'express';
+import multer from 'multer';
 
 import requestValidatorMiddleware from '../middlewares/requestValidator.middleware.js';
+import multipartValidator from '../middlewares/multipart.middleware.js';
 import productValidations from '../validations/product.validation.js';
 import productController from '../controllers/product.controller.js';
 import middleware from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
+const upload = multer({
+  dest: '/tmp/images/'
+});
 const path = '/v1/product';
 
 router.route('/:productId')
@@ -19,6 +24,13 @@ router.route('/:productId')
   .patch(requestValidatorMiddleware(productValidations.updatePatchById), middleware.basicAuth, middleware.productAuth, productController.updateById)
   .delete(requestValidatorMiddleware(productValidations.deleteById), middleware.basicAuth, middleware.productAuth, productController.deleteById);
 
+router.route('/:productId/image')
+  .get(requestValidatorMiddleware(productValidations.getProductImages), middleware.basicAuth, middleware.productAuth, productController.getProductImages)
+  .post(upload.single('file'), multipartValidator.fileValidatorMiddleware, multipartValidator.imageValidatorMiddleware, requestValidatorMiddleware(productValidations.createProductImage), middleware.basicAuth, middleware.productAuth, productController.createProductImage);
+
+router.route('/:productId/image/:image_id')
+  .get(requestValidatorMiddleware(productValidations.fetchProductImage), middleware.basicAuth, middleware.productAuth, productController.fetchProductImage)
+  .delete(requestValidatorMiddleware(productValidations.deleteProductImage), middleware.basicAuth, middleware.productAuth, productController.deleteProductImage)
 
 export {
   router,

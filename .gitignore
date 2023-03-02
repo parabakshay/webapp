@@ -108,3 +108,5 @@ config/deployment.json
 
 #ignore locally created artifacts
 *.tar.gz
+
+.DS_Store
