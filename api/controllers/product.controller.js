@@ -68,10 +68,50 @@ const deleteById = async (req, res) => {
     }
 };
 
+const getProductImages = async (req, res) => {
+    try {
+        const data = await productService.getProductImages(req.params.productId);
+        responseHandler(res, data, 200);
+    } catch(error){
+        return handleGenericError(res, error);
+    }
+}
+
+const createProductImage = async (req, res) => {
+    try {
+        await productService.createProductImage(req);
+        responseHandler(res, 'File Uploaded', 201);
+    } catch(error){
+        return handleGenericError(res, error);
+    }
+}
+
+const fetchProductImage = async (req, res) => {
+    try {
+        const data = await productService.fetchProductImage(req.params.productId, req.params.image_id);
+        responseHandler(res, data, 200);
+    } catch(error){
+        return handleGenericError(res, error);
+    }
+}
+
+const deleteProductImage = async (req, res) => {
+    try {
+        await productService.deleteProductImage(req.params.productId, req.params.image_id);
+        responseHandler(res, null, 204);
+    } catch(error){
+        return handleGenericError(res, error);
+    }
+}
+
 export default {
     fetchById,
     create,
     updateById,
     patchById,
-    deleteById
+    deleteById,
+    getProductImages,
+    createProductImage,
+    fetchProductImage,
+    deleteProductImage,
 };

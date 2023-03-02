@@ -3,7 +3,7 @@ import helmet from 'helmet';
 import hpp from 'hpp';
 import cors from 'cors';
 import morgan from 'morgan';
-
+import multer from 'multer';
 import routes from './routes/index.js';
 // import authmiddleware from './middlewares/auth.middleware.js';
 
@@ -31,6 +31,13 @@ app.use(hpp());
 
 app.use(routes);
 
-
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    // Handling MulterError: Unexpected field
+    res.status(400).send('Bad Request: Invalid form-data');
+  } else {
+    next(err);
+  }
+});
 
 export default app;

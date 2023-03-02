@@ -3,11 +3,14 @@ import stoppable from 'stoppable';
 import app from './api/app.js';
 import http from 'http';
 import mysql from 'mysql2/promise';
+
 import * as dotenv from 'dotenv';
 dotenv.config();
 
 import _conf from './config/index.js';
 global.config = _conf;
+
+import migration  from './dbMigrations/migration.js';
 
 const httpServer = http.createServer(app);
 
@@ -16,6 +19,7 @@ const initMySQLConn = async () => {
     global.dbConn = await mysql.createPool({
         host: dbConf.host,
         user: dbConf.user,
+        port: dbConf.port,
         password: dbConf.password,
         database: dbConf.dbName,
         waitForConnections: dbConf.waitForConnections,
@@ -30,6 +34,7 @@ const server = stoppable(
     httpServer.listen(config.app.port, async () => {
         await initMySQLConn();
         console.log('WebApp connected to MySQL DB');
+        await migration.bootstrapDB();
         console.log('Server listening on port', config.app.port);
     }));
 

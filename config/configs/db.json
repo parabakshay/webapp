@@ -23,6 +23,12 @@
         "default": "csye6225",
         "env": "MYSQL_DB_NAME"
     },
+    "port": {
+        "doc": "mysql db port",
+        "format": "Number",
+        "default": 3306,
+        "env": "MYSQL_DB_PORT"
+    },
     "waitForConnections": {
         "doc":"mysql wait for connections",
         "format": "Boolean",
@@ -52,5 +58,11 @@
         "format": "Number",
         "default": 0,
         "env": "MYSQL_QUEUE_LIMIT" 
+    },
+    "dialect": {
+        "doc": "Database Dialect",
+        "format": "String",
+        "default": "mysql",
+        "env": "DB_DIALECT"
     }
 }

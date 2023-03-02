@@ -52,14 +52,14 @@ const basicAuth = async (req, res, next) => {
 
 const userAuth = async (req, res, next) => {
     const userId = req.params && req.params.userId;
-    if(isEmpty(userId)) return sendResponse(res, 'UNAUTHORIZED', 401);
+    if(!userId) return sendResponse(res, 'UNAUTHORIZED', 401);
     if(!verifyUserId(userId, req.userInfo)) return sendResponse(res, 'FORBIDDEN', 403);
     return next();
 };
 
 const productAuth = async (req, res, next) => {
     const productId = req.params && req.params.productId;
-    if(isEmpty(productId)) return sendResponse(res, 'UNAUTHORIZED', 401);
+    if(!productId) return sendResponse(res, 'UNAUTHORIZED', 401);
     const {verified, msg, code} = await verifyProductOwner(parseInt(productId), req.userInfo);
     if(!verified) return sendResponse(res, msg, code);
     return next();

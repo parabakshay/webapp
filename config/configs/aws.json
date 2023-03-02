@@ -1,0 +1,26 @@
+{
+    "aws_default_region": {
+        "doc": "Default AWS REGION",
+        "format": "String",
+        "default": "us-east-1",
+        "env": "AWS_DEFAULT_REGION"
+    },
+    "s3bucket": {
+        "doc": "S3 Bucket Name",
+        "format": "String",
+        "default": "csye6225bucket",
+        "env": "S3_BUCKET_NAME"
+    },
+    "s3_allowed_mimetype": {
+        "doc": "S3 Allowed Mimetype",
+        "format": "String",
+        "default": "image/avif,image/bmp,image/gif,image/jpeg,image/png,image/svg+xml,image/webp,image/vnd.microsoft.icon,image/tiff",
+        "env": "S3_ALLOWED_MIMETYPE"
+    },
+    "s3_max_delete_count": {
+        "doc": "Max Count for Object Deletion via single Delete Objects Call",
+        "format": "Number",
+        "default": 1000,
+        "env": "S3_MAX_DELETE_COUNT"
+    }
+}
