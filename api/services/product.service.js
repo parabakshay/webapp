@@ -121,7 +121,14 @@ const createProductImage = async (req) => {
         file_name,
         s3_bucket_path: Key,
     });
-    return;
+    const imageData = await ImageModel.fetchByKey(Key);
+    if (_.isEmpty(imageData)) {
+        throw {
+            message: "Requested resource not present",
+            errorCode: 404
+        }
+    }
+    return imageData;
 };
 
 const deleteProductImage = async (productId, image_id) => {

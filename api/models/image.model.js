@@ -31,10 +31,18 @@ const deleteAllImages = async (productId, image_id) => {
     return;
 }
 
+const fetchByKey = async (key) => {
+    const query = "SELECT * FROM image WHERE s3_bucket_path=? LIMIT 1";
+    const [rows] = await dbConn.query(query, [key]);
+    if(rows.length) return rows[0];
+    else return {}; 
+}
+
 export default {
     insertOne,
     fetchKey,
     deleteImage,
     fetchAllImages,
     deleteAllImages,
+    fetchByKey,
 }

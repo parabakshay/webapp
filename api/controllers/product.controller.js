@@ -79,8 +79,8 @@ const getProductImages = async (req, res) => {
 
 const createProductImage = async (req, res) => {
     try {
-        await productService.createProductImage(req);
-        responseHandler(res, 'File Uploaded', 201);
+        const data = await productService.createProductImage(req);
+        responseHandler(res, data, 201);
     } catch(error){
         return handleGenericError(res, error);
     }
