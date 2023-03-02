@@ -36,10 +36,27 @@ const findBySkuId = async (_id) => {
     else return {};
 }
 
+const getProductImages = async (_id) => {
+    const query = "SELECT i.image_id, i.product_id, i.file_name, i.date_created, i.s3_bucket_path FROM product p INNER JOIN image i ON p.id = i.product_id WHERE p.id=?";
+    const [rows] = await dbConn.query(query, [_id]);
+    if(rows.length) return rows;
+    else return {};
+}
+
+const fetchProductImage = async (productId, image_id) => {
+    const query = "SELECT i.image_id, i.product_id, i.file_name, i.date_created, i.s3_bucket_path FROM product p INNER JOIN image i ON p.id = i.product_id WHERE p.id=? AND i.image_id=? LIMIT 1";
+    const [rows] = await dbConn.query(query, [productId, image_id]);
+    if(rows.length) return rows[0];
+    else return {};
+}
+
+
 export default {
     findOne,
     insertOne,
     updateById,
     deleteById,
     findBySkuId,
+    getProductImages,
+    fetchProductImage
 }

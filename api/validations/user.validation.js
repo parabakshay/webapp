@@ -11,13 +11,13 @@ const create = {
 
 const fetchById = {
 	params: Joi.object().keys({
-		userId: Joi.string().required(),
+		userId: Joi.number().integer().required(),
 	}),
 };
 
 const updateById = {
 	params: Joi.object().keys({
-		userId: Joi.string().required(),
+		userId: Joi.number().integer().required(),
 	}),
 	body: Joi.object().keys({
 		first_name: Joi.string(),
