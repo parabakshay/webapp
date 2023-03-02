@@ -24,7 +24,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Setup packer
         uses: hashicorp/setup-packer@main
@@ -34,8 +34,8 @@ jobs:
 
       - name: Run `packer init`
         id: init
-        run: packer init -var-file="./packer/variables.pkrvars.hcl" ./packer/
+        run: packer init -var-file="./packer/variables.pkrvars.hcl" -var 'ami_users=[${{ secrets.DEMO_ACCOUNT_ID }}]' ./packer/
 
       - name: Run `packer validate`
         id: validate
-        run: packer validate -var-file="./packer/variables.pkrvars.hcl" ./packer/
+        run: packer validate -var-file="./packer/variables.pkrvars.hcl" -var 'ami_users=[${{ secrets.DEMO_ACCOUNT_ID }}]' ./packer/

@@ -1,6 +1,6 @@
 name: Build Custom AMI
 on:
-  pull_request:
+  push:
     branches: [ "main" ]
 
 jobs:
@@ -41,11 +41,11 @@ jobs:
 
       - name: Run `packer init`
         id: init
-        run: packer init -var-file="./packer/variables.pkrvars.hcl" ./packer/
+        run: packer init -var-file="./packer/variables.pkrvars.hcl" -var 'ami_users=[${{ secrets.DEMO_ACCOUNT_ID }}]' ./packer/
 
       - name: Run `packer validate`
         id: validate
-        run: packer validate -var-file="./packer/variables.pkrvars.hcl" ./packer/
+        run: packer validate -var-file="./packer/variables.pkrvars.hcl" -var 'ami_users=[${{ secrets.DEMO_ACCOUNT_ID }}]' ./packer/
       
       - name: Build `packer build`
         id: build
