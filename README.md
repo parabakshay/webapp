@@ -8,7 +8,7 @@ This README provides step-by-step instructions for cloning, setting up, running 
 ## Prerequisites
 Before you begin, make sure you have the following installed:
 
-* Node.js
+* node.js
 * npm (Node Package Manager)
 * Git
 * MySQL Database
