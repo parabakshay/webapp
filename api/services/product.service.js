@@ -1,7 +1,6 @@
 import _ from 'lodash';
-import {
-    v4 as uuidv4
-} from 'uuid';
+import fs from 'fs';
+
 import {
     PutObjectCommand,
     DeleteObjectCommand,
@@ -107,12 +106,11 @@ const createProductImage = async (req) => {
     const filenameLength = 255;
     const originalname = req.file.originalname;
     const file_name = originalname.length > filenameLength ? originalname.length(0, filenameLength) : originalname;
-
-    const Key = `product_${req.params.productId}/${uuidv4()}`;
+    const Key = `product_${req.params.productId}/${req.file.filename}`;
     const params = {
         Bucket: config.aws.s3bucket,
         Key,
-        Body: req.file.buffer,
+        Body: fs.readFileSync(req.file.path),
         ContentType: req.file.mimetype,
     };
     await s3Client.send(new PutObjectCommand(params));
