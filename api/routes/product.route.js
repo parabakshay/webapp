@@ -1,5 +1,8 @@
 import express from 'express';
 import multer from 'multer';
+import {
+  v4 as uuidv4
+} from 'uuid';
 
 import requestValidatorMiddleware from '../middlewares/requestValidator.middleware.js';
 import multipartValidator from '../middlewares/multipart.middleware.js';
@@ -9,7 +12,8 @@ import middleware from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 const upload = multer({
-  dest: '/tmp/images/'
+  dest: '/tmp/images/',
+  filename: uuidv4(),
 });
 const path = '/v1/product';
 
