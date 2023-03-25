@@ -1,0 +1,14 @@
+{
+    "host": {
+        "doc": "statsd host",
+        "format": "String",
+        "default": "localhost",
+        "env": "STATSD_HOST"
+    },
+    "port": {
+        "doc": "statsd port",
+        "format": "Number",
+        "default": 8125,
+        "env": "STATSD_PORT"
+    }
+}

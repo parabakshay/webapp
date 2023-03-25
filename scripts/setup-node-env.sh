@@ -13,12 +13,21 @@ sudo systemctl start nginx
 # Install MYSQL Client
 sudo yum install mysql -y
 
+# Install CloudWatch
+sudo yum install amazon-cloudwatch-agent -y
+
 # NVM install
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 source ~/.bashrc
 # Install lts
 nvm install 16.19.1
 nvm use 16.19.1
+
+#Create directory for webapp logs
+sudo mkdir /var/log/webapp
+
+#Change ownership of directory to system user running webapp
+sudo chown ec2-user /var/log/webapp
 
 # Decompress webapp
 mkdir /home/ec2-user/webapp

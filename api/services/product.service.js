@@ -12,10 +12,15 @@ import {
 } from "../utils/s3Client.js";
 import ProductModel from '../models/product.model.js';
 import ImageModel from '../models/image.model.js';
+import logger from '../logger/index.js';
 
-const deleteAllImages = async (productId) => {
+const deleteAllImages = async (productId, trxId) => {
     const imageInfo = await ImageModel.fetchAllImages(productId);
-    if (_.isEmpty(imageInfo)) return;
+    if (_.isEmpty(imageInfo)) {
+        logger.info({message: "No Images Found Uploaded Against This Product, Proceeding To Delete Product", productId, transactionId: trxId});
+        return;
+    }
+    logger.info({message: `${imageInfo.length} Images Found Uploaded Against This Product, Deleting Images Before Deleting Product`, productId, transactionId: trxId});
     const deleteParams = {
         Bucket: config.aws.s3bucket,
         Delete: {
@@ -30,6 +35,7 @@ const deleteAllImages = async (productId) => {
         deleteParams.Delete.Objects = objects;
         await s3Client.send(new DeleteObjectsCommand(deleteParams));
         await ImageModel.deleteAllImages(productId);
+        logger.info({message: `${imageInfo.length} Images Deleted Uploaded Against This Product, Proceeding To Delete Product`, productId, transactionId: trxId});
     }
     return;
 };
@@ -68,8 +74,8 @@ const updateById = async (productInfo, _id) => {
     return;
 };
 
-const deleteById = async (_id) => {
-    await deleteAllImages(_id);
+const deleteById = async (_id, trxId) => {
+    await deleteAllImages(_id, trxId);
     const metaData = await ProductModel.deleteById(_id);
     if (!metaData.affectedRows) {
         throw {
