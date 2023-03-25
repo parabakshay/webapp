@@ -1,0 +1,12 @@
+{
+    "dir": {
+        "format": "String",
+        "default": "/var/log/webapp/",
+        "env": "APP_LOGS_DIR"
+    },
+    "level": {
+        "format": "String",
+        "default": "info",
+        "env": "APP_LOGS_LEVEL"
+    }
+}

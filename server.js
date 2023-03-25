@@ -10,13 +10,15 @@ dotenv.config();
 import _conf from './config/index.js';
 global.config = _conf;
 
-import migration  from './dbMigrations/migration.js';
+import logger from './api/logger/index.js';
+import migration from './dbMigrations/migration.js';
 
 const httpServer = http.createServer(app);
 
 const initMySQLConn = async () => {
     let dbConf = config.db;
-    global.dbConn = await mysql.createPool({
+    try {
+        global.dbConn = await mysql.createPool({
         host: dbConf.host,
         user: dbConf.user,
         port: dbConf.port,
@@ -28,34 +30,49 @@ const initMySQLConn = async () => {
         idleTimeout: dbConf.idleTimeout,
         queueLimit: dbConf.queueLimit
     });
+    dbConn.on('acquire', function (connection) {
+        console.log('DB Connection %d acquired', connection.threadId);
+    });
+    dbConn.on('release', function (connection) {
+        console.log('DB Connection %d released', connection.threadId);
+    });
+    await dbConn.query('SELECT 1 + 1 AS solution');
+    } catch (error) {
+        logger.fatal({message: "Database Connection Failure Detected", error: error.message});
+        throw error;
+    }
 };
 
 const server = stoppable(
     httpServer.listen(config.app.port, async () => {
         await initMySQLConn();
-        console.log('WebApp connected to MySQL DB');
+        logger.info({message: 'WebApp connected to MySQL DB'});
         await migration.bootstrapDB();
-        console.log('Server listening on port', config.app.port);
+        logger.info({message: `Server listening on port ${config.app.port}`});
     }));
 
 const shutdown = () => {
     server.close((err) => {
         if (err) {
-            console.error('Error detected during shutdown', err);
+            logger.error('Error detected during process shutdown', err);
             process.exitCode = 1;
         }
+        dbConn.end(function (err) {
+            if (err) logger.error('Error detected while releasing db connections', err);
+            else logger.info("All db connections in the pool are released") 
+          });
         process.exit();
     });
 };
 
 // Quit on CTRL - C when running Docker in Terminal
 process.on('SIGINT', () => {
-    console.log('Received SIGINT, gracefully shutting down');
+    logger.info('Received SIGINT, gracefully shutting down');
     shutdown();
 });
 
 // Quit on docker stop command
 process.on('SIGTERM', () => {
-    console.info('Received SIGTERM, gracefully shutting down');
+    logger.info('Received SIGTERM, gracefully shutting down');
     shutdown();
 });

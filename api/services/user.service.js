@@ -7,7 +7,7 @@ import emailValidator from '../utils/emailValidator.js';
  * Create user
  * @param {Object} userInfo: user info to be saved to create user
  */
-const create = async (userInfo) => {
+const create = async (userInfo, trxId) => {
   const columns = Object.keys(userInfo);
   const createAllowedColumns = ['first_name', 'last_name', 'password', 'username'];
   if (!_.difference(columns, createAllowedColumns).length && _.intersection(columns, createAllowedColumns).length === createAllowedColumns.length) {
@@ -42,7 +42,7 @@ const fetchById = async (_id) => {
  * @param {Object} userInfo: user info to be updated
  * @return {Object} updatedUserInfo
  */
-const updateById = async (_id, userInfo) => {
+const updateById = async (_id, userInfo, trxId) => {
   const columns = Object.keys(userInfo);
   const updateAllowedColumns = ['first_name', 'last_name', 'password'];
   if (!_.difference(columns, updateAllowedColumns).length) {
