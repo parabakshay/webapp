@@ -47,9 +47,9 @@ jobs:
         id: validate
         run: packer validate -var-file="./packer/variables.pkrvars.hcl" -var 'ami_users=[${{ secrets.DEMO_ACCOUNT_ID }}]' ./packer/
       
-      # - name: Build `packer build`
-      #   id: build
-      #   run: packer build -var-file="./packer/variables.pkrvars.hcl" -var 'ami_users=[${{ secrets.DEMO_ACCOUNT_ID }}]' ./packer/
+      - name: Build `packer build`
+        id: build
+        run: packer build -var-file="./packer/variables.pkrvars.hcl" -var 'ami_users=[${{ secrets.DEMO_ACCOUNT_ID }}]' ./packer/
 
       - name: Configure Demo Account AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
