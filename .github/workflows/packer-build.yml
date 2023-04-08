@@ -1,6 +1,6 @@
 name: Build Custom AMI
 on:
-  push:
+  pull_request:
     branches: [ "main" ]
 
 jobs:
@@ -26,8 +26,8 @@ jobs:
       - name: Compress codebase
         run:  touch webapp.tar.gz && tar --exclude=webapp.tar.gz --exclude='.git' --exclude='.github' --exclude='.vscode' --exclude='node_modules' --exclude="package-lock.json" --exclude=".env" -zcvf webapp.tar.gz .
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Configure Dev Account AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -50,3 +50,22 @@ jobs:
       - name: Build `packer build`
         id: build
         run: packer build -var-file="./packer/variables.pkrvars.hcl" -var 'ami_users=[${{ secrets.DEMO_ACCOUNT_ID }}]' ./packer/
+
+      - name: Configure Demo Account AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.DEMO_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.DEMO_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.DEMO_AWS_REGION }}  
+
+      - name: Create New Launch Template version
+        id: create launch template version
+        run: |
+          AMI_ID=$(cat build.json | jq -r '.builds[-1].artifact_id' | cut -d ':' -f 2)
+          LATEST_VERSION=$(aws ec2 describe-launch-templates --launch-template-names ${{ secrets.LAUNCH_TEMPLATE_NAME }} --query "LaunchTemplates[].LatestVersionNumber" --output text)
+          aws ec2 create-launch-template-version --launch-template-name ${{ secrets.LAUNCH_TEMPLATE_NAME }} --source-version-number $LATEST_VERSION --launch-template-data "{ \"ImageId\": \"$AMI_ID\" }"
+      
+      - name: Trigger Instance Refresh
+        id: trigger instance refresh
+        run: |
+          aws autoscaling start-instance-refresh --auto-scaling-group-name ${{ secrets.AUTO_SCALING_GROUP_NAME }}
