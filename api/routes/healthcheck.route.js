@@ -24,25 +24,25 @@ router.route('/')
     }
   });
 
-// router.route('/test')
-//   .get(logEntryPoint, async (req, res) => {
-//     try {
-//       logger.info({
-//         message: "Test Health Check Successful",
-//         transactionId: req.trxId,
-//         responseCode: 200
-//       });
-//       res.status(200).send("OK, Accepted");
-//     } catch (e) {
-//       logger.info({
-//         message: "Health Check Failure",
-//         transactionId: req.trxId,
-//         responseCode: 503,
-//         error: e.message
-//       });
-//       res.status(503).send();
-//     }
-//   });
+router.route('/test')
+  .get(logEntryPoint, async (req, res) => {
+    try {
+      logger.info({
+        message: "Test Health Check Successful",
+        transactionId: req.trxId,
+        responseCode: 200
+      });
+      res.status(200).send("OK, Accepted");
+    } catch (e) {
+      logger.info({
+        message: "Health Check Failure",
+        transactionId: req.trxId,
+        responseCode: 503,
+        error: e.message
+      });
+      res.status(503).send();
+    }
+  });
 
 export {
   router,
