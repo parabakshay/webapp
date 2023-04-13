@@ -24,7 +24,7 @@ router.route('/')
     }
   });
 
-router.route('/test')
+router.route('/test1')
   .get(logEntryPoint, async (req, res) => {
     try {
       logger.info({
